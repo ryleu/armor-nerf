@@ -19,7 +19,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "me.ryleu.armornerf.ExampleMod"
+      "me.ryleu.armornerf.ArmorNerf"
     ]
   },
   "mixins": [
@@ -27,9 +27,8 @@
   ],
 
   "depends": {
-    "fabricloader": ">=0.14.11",
     "fabric-api": "*",
-    "minecraft": "1.19.2",
+    "minecraft": "1.19.x",
     "java": ">=17"
   }
 }

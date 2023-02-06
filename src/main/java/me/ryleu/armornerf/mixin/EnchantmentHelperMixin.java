@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(EnchantmentHelper.class)
 public class EnchantmentHelperMixin {
 	@Inject(at = @At("RETURN"), method = "Lnet/minecraft/enchantment/EnchantmentHelper;getProtectionAmount(Ljava/lang/Iterable;Lnet/minecraft/entity/damage/DamageSource;)I", cancellable = true)
-	private void getProtectionAmount(CallbackInfoReturnable<Integer> cir) {
+	private static void getProtectionAmount(CallbackInfoReturnable<Integer> cir) {
 		cir.setReturnValue((int) Math.ceil(cir.getReturnValue() / 2.0));
 	}
 }
