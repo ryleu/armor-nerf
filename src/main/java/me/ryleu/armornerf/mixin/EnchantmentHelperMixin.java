@@ -1,5 +1,6 @@
 package me.ryleu.armornerf.mixin;
 
+import me.ryleu.armornerf.ArmorNerf;
 import net.minecraft.enchantment.EnchantmentHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -15,6 +16,6 @@ public class EnchantmentHelperMixin {
 			cancellable = true
 	)
 	private static void getProtectionAmount(CallbackInfoReturnable<Integer> cir) {
-		cir.setReturnValue((int) Math.ceil(cir.getReturnValue() / 2.0));
+		cir.setReturnValue((int) Math.ceil(cir.getReturnValue() * ArmorNerf.protectionAmountMultiplier()));
 	}
 }
