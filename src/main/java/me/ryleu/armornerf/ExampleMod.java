@@ -1,4 +1,4 @@
-package net.fabricmc.example;
+package me.ryleu.armornerf;
 
 import net.fabricmc.api.ModInitializer;
 import org.slf4j.Logger;
