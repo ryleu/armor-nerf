@@ -3,12 +3,10 @@ package me.ryleu.armornerf;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import net.fabricmc.api.ModInitializer;
-import net.minecraft.entity.DamageUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.LinkedHashMap;
@@ -20,29 +18,36 @@ public class ArmorNerf implements ModInitializer {
 	private static final File configFile = new File("config/armornerf.json");
 
 	private static final Gson gson = new Gson();
-	private static Map<String, Double> configMap = new LinkedHashMap<>();
-	private static final TypeToken<Map<String, Double>> configMapType = new TypeToken<>() {};
+	private static Map<String, Float> configMap = new LinkedHashMap<>();
+	private static final TypeToken<Map<String, Float>> configMapType = new TypeToken<>() {};
 
-	private static final double defaultMaxArmorMultiplier = .4;
-	private static final double defaultProtectionAmountMultiplier = .5;
+	private static final float defaultArmorMultiplier = .5F;
+	private static final float defaultProtectionMultiplier = .5F;
 
 	@Override
 	public void onInitialize() {
-		LOGGER.info("Armor and protection nerfed by 50%.");
+		LOGGER.info("Armor and protection nerfed.");
 		readConfig();
 	}
 
-	public static double getMaxArmorMultiplier() {
-		return configMap.getOrDefault("maxArmorMultiplier", defaultMaxArmorMultiplier) * DamageUtil.field_29963;
+	public static float getArmorMultiplier() {
+		return configMap.getOrDefault("armorMultiplier", defaultArmorMultiplier);
 	}
 
-	public static double protectionAmountMultiplier() {
-		return configMap.getOrDefault("protectionAmountMultiplier", defaultProtectionAmountMultiplier);
+	public static float getProtectionMultiplier() {
+		return configMap.getOrDefault("protectionMultiplier", defaultProtectionMultiplier);
 	}
 
-	public static void writeConfig(double maxArmorMultiplier, double protectionAmountMultiplier) throws IOException {
-		configMap.put("maxArmorMultiplier", maxArmorMultiplier);
-		configMap.put("protectionAmountMultiplier", protectionAmountMultiplier);
+	private static void writeConfig() throws IOException {
+		writeConfig(
+				getArmorMultiplier(),
+				getProtectionMultiplier()
+		);
+	}
+
+	public static void writeConfig(float armorMultiplier, float protectionMultiplier) throws IOException {
+		configMap.put("armorMultiplier", armorMultiplier);
+		configMap.put("protectionMultiplier", protectionMultiplier);
 
 		FileWriter writer = new FileWriter(configFile.getPath());
 		writer.write(gson.toJson(configMap));
@@ -52,21 +57,36 @@ public class ArmorNerf implements ModInitializer {
 	public static void readConfig() {
 		try {
 			if (configFile.createNewFile()) {
-				writeConfig(defaultMaxArmorMultiplier, defaultProtectionAmountMultiplier);
-			} else {
-				Scanner scanner = new Scanner(configFile);
-
-				StringBuilder data = new StringBuilder();
-				while (scanner.hasNextLine()) {
-					data.append(scanner.nextLine());
-				}
-
-				configMap = gson.fromJson(data.toString(), configMapType);
+				writeConfig();
 			}
+
+			Scanner scanner = new Scanner(configFile);
+			StringBuilder data = new StringBuilder();
+			while (scanner.hasNextLine()) {
+				data.append(scanner.nextLine());
+			}
+
+			Map<String, Float> newMap = gson.fromJson(data.toString(), configMapType);
+
+
+			boolean mustWrite = false;
+
+			// data validation
+			for (String key : new String[]{"armorMultiplier", "protectionMultiplier"}) {
+				mustWrite = !inBounds(newMap.getOrDefault(key, -1F)) || mustWrite;
+			}
+
+			configMap = newMap;
+
+			if (mustWrite) writeConfig();
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 
 		LOGGER.info(gson.toJson(configMap));
+	}
+
+	private static boolean inBounds(float number) {
+		return 0F <= number && number <= 1F;
 	}
 }
