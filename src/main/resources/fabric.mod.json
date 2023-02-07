@@ -4,7 +4,7 @@
   "version": "${version}",
 
   "name": "Armor Nerf",
-  "description": "Nerfs armor and protection by 50% to make PvP less of a slap fight.",
+  "description": "Nerfs armor and protection by a configurable amount to make PvP less of a slap fight.",
   "authors": [
     "ryleu"
   ],
@@ -14,7 +14,7 @@
   },
 
   "license": "GPL-3.0-or-later",
-  "icon": "assets/armornerf/icon.png",
+  "icon": "assets/armor-nerf/icon.png",
 
   "environment": "*",
   "entrypoints": {
