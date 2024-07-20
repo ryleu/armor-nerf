@@ -22,8 +22,7 @@ public class DamageUtilMixin {
             float armorToughness,
             CallbackInfoReturnable<Float> cir
     ) {
-        float f = MathHelper.clamp(armor * ArmorNerf.getArmorMultiplier(), 0F, 20F);
-        cir.setReturnValue(damage * (1F - f / 20F));
+        cir.setReturnValue(Math.max(0F, ArmorNerf.getToughnessFormula().calculate(damage, armor, armorToughness)));
     }
 
     @Inject(
@@ -36,7 +35,8 @@ public class DamageUtilMixin {
             float protection,
             CallbackInfoReturnable<Float> cir
     ) {
-        float f = MathHelper.clamp(protection * ArmorNerf.getProtectionMultiplier(), 0F, 20F);
-        cir.setReturnValue(damageDealt * (1F - f / 20F));
+        float adjustedProtection = MathHelper.clamp(
+                protection * ArmorNerf.CONFIG.protectionPerPoint(), 0F, 1F);
+        cir.setReturnValue(damageDealt * (1F - adjustedProtection));
     }
 }

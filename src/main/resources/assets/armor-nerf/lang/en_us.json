@@ -1,0 +1,6 @@
+{
+  "text.config.armor-nerf.title": "Armor Nerf Configuration",
+  "text.config.armor-nerf.option.armorPercentage": "Armor Percentage",
+  "text.config.armor-nerf.option.protectionPerPoint": "Protection per Point",
+  "text.config.armor-nerf.option.armorFormula": "Armor Formula"
+}
