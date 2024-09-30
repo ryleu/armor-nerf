@@ -28,7 +28,7 @@ public class DamageUtilMixin {
     private static void modifyGetDamageLeft(
             LivingEntity armorWearer, float damageAmount, DamageSource damageSource, float armor, float armorToughness, CallbackInfoReturnable<Float> cir
     ) {
-        ArmorFormula formula = ArmorNerf.getToughnessFormula();
+        ArmorFormula formula = ArmorNerf.getArmorFormula();
         cir.setReturnValue(Math.max(0F, formula.calculate(armorWearer, damageAmount, damageSource, armor, armorToughness)));
     }
 

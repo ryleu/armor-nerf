@@ -16,7 +16,7 @@ public class ArmorNerf implements ModInitializer {
 	private static ArmorFormula armorFormula = new VanillaFormula();
 	private static final HashMap<String, ArmorFormula> formulaRegistry = new HashMap<>();
 
-	public static ArmorFormula getToughnessFormula() {
+	public static ArmorFormula getArmorFormula() {
 		return armorFormula;
 	}
 
