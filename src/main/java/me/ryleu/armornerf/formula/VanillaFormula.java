@@ -12,7 +12,7 @@ public class VanillaFormula extends ArmorFormula {
 
         float adjustedToughness = 2.0F + armorToughness / 4.0F;
 
-        // calculate armor toughness effectiveness reduction\
+        // calculate armor toughness effectiveness reduction
         float armorValue = Math.max(armor - damageAmount / adjustedToughness, armor * 0.2F);
 
         // whether to cap armor at a full bar -- will make many modded armors far more effective

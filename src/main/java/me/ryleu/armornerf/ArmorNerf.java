@@ -1,9 +1,6 @@
 package me.ryleu.armornerf;
 
-import me.ryleu.armornerf.formula.FlatToughnessFormula;
-import me.ryleu.armornerf.formula.LargeToughnessFormula;
-import me.ryleu.armornerf.formula.ToughnessDisabledFormula;
-import me.ryleu.armornerf.formula.VanillaFormula;
+import me.ryleu.armornerf.formula.*;
 import net.fabricmc.api.ModInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,11 +9,12 @@ import java.util.HashMap;
 
 public class ArmorNerf implements ModInitializer {
 	public static final String MOD_ID = "armor-nerf";
-	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 	public static final me.ryleu.armornerf.ArmorNerfConfig CONFIG = me.ryleu.armornerf.ArmorNerfConfig.createAndLoad();
 
-	static ArmorFormula armorFormula = new VanillaFormula();
-	static HashMap<String, ArmorFormula> formulaRegistry = new HashMap<>();
+	private static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+
+	private static ArmorFormula armorFormula = new VanillaFormula();
+	private static final HashMap<String, ArmorFormula> formulaRegistry = new HashMap<>();
 
 	public static ArmorFormula getToughnessFormula() {
 		return armorFormula;
@@ -28,7 +26,7 @@ public class ArmorNerf implements ModInitializer {
 	 * @return Whether it is registered
 	 */
 	public static boolean isRegistered(String id) {
-		return formulaRegistry == null || formulaRegistry.containsKey(id);
+		return formulaRegistry.containsKey(id);
 	}
 
 	/**
@@ -46,15 +44,20 @@ public class ArmorNerf implements ModInitializer {
 		registerFormula("toughness_disabled", new ToughnessDisabledFormula());
 		registerFormula("flat_toughness", new FlatToughnessFormula());
 		registerFormula("large_toughness", new LargeToughnessFormula());
+		registerFormula("debug", new DebugFormula());
 
-		CONFIG.subscribeToArmorFormula((String newFormulaId) -> {
-			ArmorFormula newFormula = formulaRegistry.get(newFormulaId);
-			if (newFormula == null) {
-				CONFIG.armorFormula("toughness_disabled");
-			} else {
-				armorFormula = newFormula;
-			}
-		});
-		LOGGER.info("Armor and protection nerfed.");
+		setArmorFormula(CONFIG.armorFormula());
+
+		CONFIG.subscribeToArmorFormula(this::setArmorFormula);
+	}
+
+	private void setArmorFormula(String newFormulaId) {
+		ArmorFormula newFormula = formulaRegistry.get(newFormulaId);
+		if (newFormula == null) {
+			CONFIG.armorFormula("toughness_disabled");
+		} else {
+			LOGGER.info("Set formula to {}", newFormulaId);
+			armorFormula = newFormula;
+		}
 	}
 }
