@@ -2,6 +2,8 @@ package me.ryleu.armornerf.mixin;
 
 import me.ryleu.armornerf.ArmorNerf;
 import net.minecraft.entity.DamageUtil;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.util.math.MathHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -13,16 +15,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class DamageUtilMixin {
     @Inject(
             at = @At(value = "RETURN"),
-            method = "getDamageLeft(FFF)F",
+            method = "getDamageLeft(Lnet/minecraft/entity/LivingEntity;FLnet/minecraft/entity/damage/DamageSource;FF)F",
             cancellable = true
     )
     private static void modifyGetDamageLeft(
-            float damage,
-            float armor,
-            float armorToughness,
-            CallbackInfoReturnable<Float> cir
+            LivingEntity armorWearer, float damageAmount, DamageSource damageSource, float armor, float armorToughness, CallbackInfoReturnable<Float> cir
     ) {
-        cir.setReturnValue(Math.max(0F, ArmorNerf.getToughnessFormula().calculate(damage, armor, armorToughness)));
+        cir.setReturnValue(Math.max(0F, ArmorNerf.getToughnessFormula().calculate(armorWearer, damageAmount, damageSource, armor, armorToughness)));
     }
 
     @Inject(

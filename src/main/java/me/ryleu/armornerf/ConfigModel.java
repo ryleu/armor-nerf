@@ -14,6 +14,8 @@ public class ConfigModel {
     @RangeConstraint(min = 0F, max = 0.0625F)
     public float protectionPerPoint = 0.02F;
 
+    public boolean removeArmorLimit = true;
+
     @Hook
     @PredicateConstraint("armorFormulaPredicate")
     public String armorFormula = "toughness_disabled";
