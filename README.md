@@ -19,14 +19,15 @@ is to simply nerf the everliving heck out of it.
 
 # Configuration
 
-All configuration is done through the file `config/armor-nerf.json` in your `.minecraft` directory or through
+All configuration is done through the file `config/armor-nerf.json5` in your `.minecraft` directory or through
 [Mod Menu](https://modrinth.com/mod/modmenu). Vanilla values are shown here:
 
 ```json
 {
   "armorPercentage": 0.8,
   "protectionPerPoint": 0.04,
-  "armorFormula": "VANILLA"
+  "removeArmorLimit": false,
+  "armorFormula": "vanilla"
 }
 ```
 
@@ -34,6 +35,8 @@ All configuration is done through the file `config/armor-nerf.json` in your `.mi
 
 `protectionPerPoint` is the percentage of damage reduction granted by each protection point. You can read up on what a
 protection point is [here](https://minecraft.wiki/w/Protection#Usage).
+
+`removeArmorLimit`: removes the cap of 20 armor points.
 
 `armorFormula` is the formula used to determine how armor and toughness affect damage taken. It can be one of these
 options:
@@ -43,6 +46,7 @@ options:
 - `toughness_disabled`: Ignores the toughness system entirely.
 - `flat_toughness`: Toughness reduces the incoming damage by a flat amount.
 - `large_toughness`: Toughness makes armor more effective against larger attacks.
+- `crumbling_armor`: Rebel's insane formula that makes toughness add to the armor value based on durability.
 
 # Extending
 

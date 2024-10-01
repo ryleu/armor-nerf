@@ -44,6 +44,7 @@ public class ArmorNerf implements ModInitializer {
 		registerFormula("toughness_disabled", new ToughnessDisabledFormula());
 		registerFormula("flat_toughness", new FlatToughnessFormula());
 		registerFormula("large_toughness", new LargeToughnessFormula());
+		registerFormula("crumbling_armor", new CrumblingArmorFormula());
 		registerFormula("debug", new DebugFormula());
 
 		setArmorFormula(CONFIG.armorFormula());
