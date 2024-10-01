@@ -31,7 +31,10 @@ public class CrumblingArmorFormula extends ArmorFormula {
             totalDamage += itemStack.getDamage();
         }
 
-        float toughnessAdder = (armorToughness / 4F) * (1F - totalDamage / totalMaxDamage);
+        float toughnessAdder = 0;
+        if (totalMaxDamage > 0) {
+            toughnessAdder = (armorToughness / 4F) * (1F - totalDamage / totalMaxDamage);
+        }
 
         return baseFormula.calculate(
                 armorWearer,

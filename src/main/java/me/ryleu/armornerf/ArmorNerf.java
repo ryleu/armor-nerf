@@ -14,7 +14,7 @@ public class ArmorNerf implements ModInitializer {
 	private static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
 	private static ArmorFormula armorFormula = new VanillaFormula();
-	private static final HashMap<String, ArmorFormula> formulaRegistry = new HashMap<>();
+	private static HashMap<String, ArmorFormula> formulaRegistry;
 
 	public static ArmorFormula getArmorFormula() {
 		return armorFormula;
@@ -26,7 +26,7 @@ public class ArmorNerf implements ModInitializer {
 	 * @return Whether it is registered
 	 */
 	public static boolean isRegistered(String id) {
-		return formulaRegistry.containsKey(id);
+		return formulaRegistry == null || formulaRegistry.containsKey(id);
 	}
 
 	/**
@@ -40,6 +40,8 @@ public class ArmorNerf implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+		formulaRegistry = new HashMap<>();
+
 		registerFormula("vanilla", new VanillaFormula());
 		registerFormula("toughness_disabled", new ToughnessDisabledFormula());
 		registerFormula("flat_toughness", new FlatToughnessFormula());
